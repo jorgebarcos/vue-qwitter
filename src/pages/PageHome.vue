@@ -35,8 +35,8 @@
 
     <q-separator size="10px" color="grey-2" class="divider" />
 
-    <q-list>
-      <q-item class="q-py-md">
+    <q-list separator>
+      <q-item class="q-py-md" v-for="qweet in qweets" :key="qweet.date">
         <q-item-section avatar top>
           <q-avatar size="xl">
             <img
@@ -51,10 +51,7 @@
             <span class="text-grey-7">@jorge__barcos</span>
           </q-item-label>
           <q-item-label class="qweet-content text-body1">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Rationeitaque vitae nemo animi? Veniam temporibus aliquid placeat
-            dolores sapiente hic. Error distinctio molestias ex porro, facilis
-            ducimus eveniet necessitatibus nulla?
+            {{ qweet.content }}
           </q-item-label>
           <div class="qweet-icons row justify-between q-mt-sm">
             <q-btn color="grey" icon="far fa-comment" size="sm" flat round />
@@ -65,7 +62,7 @@
         </q-item-section>
 
         <q-item-section side top>
-          1 min ago
+          {{ qweet.date | relativeDate }}
         </q-item-section>
       </q-item>
     </q-list>
@@ -73,12 +70,30 @@
 </template>
 
 <script>
+import { formatDistance } from "date-fns";
 export default {
   name: "PageHome",
   data() {
     return {
-      newQweetContent: ""
+      newQweetContent: "",
+      qweets: [
+        {
+          content:
+            "Mauris quis euismod mauris. Nam tortor nunc, cursus in molestie vitae, ultrices non erat. Morbi risus est, venenatis vel ultrices id, semper non risus. Duis mauris ante, molestie sit amet nulla a, convallis vulputate leo. Suspendisse eu pulvinar sem, sed luctus tellus. Etiam eu magna mollis, efficitur lectus quis, finibus risus. Vestibulum ornare euismod orci, vitae porttitor odio lacinia non. Quisque ut tincidunt quam.",
+          date: 1623021755581
+        },
+        {
+          content:
+            "Mauris quis euismod mauris. Nam tortor nunc, cursus in molestie vitae, ultrices non erat. Morbi risus est, venenatis vel ultrices id, semper non risus. Duis mauris ante, molestie sit amet nulla a, convallis vulputate leo. Suspendisse eu pulvinar sem, sed luctus tellus. Etiam eu magna mollis, efficitur lectus quis, finibus risus. Vestibulum ornare euismod orci, vitae porttitor odio lacinia non. Quisque ut tincidunt quam.",
+          date: 1623021778431
+        }
+      ]
     };
+  },
+  filters: {
+    relativeDate(value) {
+      return formatDistance(value, new Date());
+    }
   }
 };
 </script>
