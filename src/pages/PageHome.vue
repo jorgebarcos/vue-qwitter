@@ -22,12 +22,13 @@
       </div>
       <div class="col col-shrink">
         <q-btn
+          @click="addNewQweet"
           color="primary"
           label="Qweet"
           rounded
           unelevated
           no-caps
-          :disable="newQweetContent"
+          :disable="!newQweetContent"
           class="q-mb-lg"
         />
       </div>
@@ -89,6 +90,15 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    addNewQweet() {
+      let newQweet = {
+        content: this.newQweetContent,
+        date: Date.now()
+      };
+      this.qweets.unshift(newQweet);
+    }
   },
   filters: {
     relativeDate(value) {
