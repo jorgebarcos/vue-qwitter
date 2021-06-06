@@ -34,6 +34,41 @@
     </div>
 
     <q-separator size="10px" color="grey-2" class="divider" />
+
+    <q-list>
+      <q-item class="q-py-md">
+        <q-item-section avatar top>
+          <q-avatar size="xl">
+            <img
+              src="https://es.gravatar.com/userimage/140485787/ded6e4a586fac7c16cbe46c7358b45bf.jpg?size=200"
+            />
+          </q-avatar>
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label class="text-subtitle1"
+            ><strong>Jorge Barcos</strong>
+            <span class="text-grey-7">@jorge__barcos</span>
+          </q-item-label>
+          <q-item-label class="qweet-content text-body1">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Rationeitaque vitae nemo animi? Veniam temporibus aliquid placeat
+            dolores sapiente hic. Error distinctio molestias ex porro, facilis
+            ducimus eveniet necessitatibus nulla?
+          </q-item-label>
+          <div class="qweet-icons row justify-between q-mt-sm">
+            <q-btn color="grey" icon="far fa-comment" size="sm" flat round />
+            <q-btn color="grey" icon="fas fa-retweet" size="sm" flat round />
+            <q-btn color="grey" icon="far fa-heart" size="sm" flat round />
+            <q-btn color="grey" icon="fas fa-trash" size="sm" flat round />
+          </div>
+        </q-item-section>
+
+        <q-item-section side top>
+          1 min ago
+        </q-item-section>
+      </q-item>
+    </q-list>
   </q-page>
 </template>
 
@@ -57,4 +92,8 @@ export default {
   border-top: 1px solid
   border-bottom: 1px solid
   border-color: $grey-4
+.qweet-content
+  white-space: pre-line
+.qweet-icons
+  margin-left: -5px
 </style>
