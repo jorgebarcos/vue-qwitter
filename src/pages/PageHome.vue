@@ -101,6 +101,7 @@
 </template>
 
 <script>
+import db from "src/boot/firebase";
 import { formatDistance } from "date-fns";
 export default {
   name: "PageHome",
@@ -108,16 +109,16 @@ export default {
     return {
       newQweetContent: "",
       qweets: [
-        {
-          content:
-            "Mauris quis euismod mauris. Nam tortor nunc, cursus in molestie vitae, ultrices non erat. Morbi risus est, venenatis vel ultrices id, semper non risus. Duis mauris ante, molestie sit amet nulla a, convallis vulputate leo. Suspendisse eu pulvinar sem, sed luctus tellus. Etiam eu magna mollis, efficitur lectus quis, finibus risus. Vestibulum ornare euismod orci, vitae porttitor odio lacinia non. Quisque ut tincidunt quam.",
-          date: 1623021755581
-        },
-        {
-          content:
-            "Mauris quis euismod mauris. Nam tortor nunc, cursus in molestie vitae, ultrices non erat. Morbi risus est, venenatis vel ultrices id, semper non risus. Duis mauris ante, molestie sit amet nulla a, convallis vulputate leo. Suspendisse eu pulvinar sem, sed luctus tellus. Etiam eu magna mollis, efficitur lectus quis, finibus risus. Vestibulum ornare euismod orci, vitae porttitor odio lacinia non. Quisque ut tincidunt quam.",
-          date: 1623021778431
-        }
+        // {
+        //   content:
+        //     "Mauris quis euismod mauris. Nam tortor nunc, cursus in molestie vitae, ultrices non erat. Morbi risus est, venenatis vel ultrices id, semper non risus. Duis mauris ante, molestie sit amet nulla a, convallis vulputate leo. Suspendisse eu pulvinar sem, sed luctus tellus. Etiam eu magna mollis, efficitur lectus quis, finibus risus. Vestibulum ornare euismod orci, vitae porttitor odio lacinia non. Quisque ut tincidunt quam.",
+        //   date: 1623021755581
+        // },
+        // {
+        //   content:
+        //     "Mauris quis euismod mauris. Nam tortor nunc, cursus in molestie vitae, ultrices non erat. Morbi risus est, venenatis vel ultrices id, semper non risus. Duis mauris ante, molestie sit amet nulla a, convallis vulputate leo. Suspendisse eu pulvinar sem, sed luctus tellus. Etiam eu magna mollis, efficitur lectus quis, finibus risus. Vestibulum ornare euismod orci, vitae porttitor odio lacinia non. Quisque ut tincidunt quam.",
+        //   date: 1623021778431
+        // }
       ]
     };
   },
@@ -140,6 +141,25 @@ export default {
     relativeDate(value) {
       return formatDistance(value, new Date());
     }
+  },
+  mounted() {
+    db.collection("qweets")
+      .orderBy("date")
+      .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          let qweetChange = change.doc.data();
+          if (change.type === "added") {
+            console.log("New qweet: ", qweetChange);
+            this.qweets.unshift(qweetChange);
+          }
+          if (change.type === "modified") {
+            console.log("Modified qweet: ", qweetChange);
+          }
+          if (change.type === "removed") {
+            console.log("Removed qweet: ", qweetChange);
+          }
+        });
+      });
   }
 };
 </script>
