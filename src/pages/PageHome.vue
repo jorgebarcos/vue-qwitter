@@ -78,7 +78,14 @@
                   flat
                   round
                 />
-                <q-btn color="grey" icon="far fa-heart" size="sm" flat round />
+                <q-btn
+                  @click="toggleQweet(qweet)"
+                  :color="qweet.liked ? 'pink' : 'grey'"
+                  :icon="qweet.liked ? 'fas fa-heart' : 'far fa-heart'"
+                  size="sm"
+                  flat
+                  round
+                />
                 <q-btn
                   color="grey"
                   icon="fas fa-trash"
@@ -106,14 +113,18 @@ export default {
       newQweetContent: "",
       qweets: [
         // {
+        //   id: "ID1",
         //   content:
         //     "Mauris quis euismod mauris. Nam tortor nunc, cursus in molestie vitae, ultrices non erat. Morbi risus est, venenatis vel ultrices id, semper non risus. Duis mauris ante, molestie sit amet nulla a, convallis vulputate leo. Suspendisse eu pulvinar sem, sed luctus tellus. Etiam eu magna mollis, efficitur lectus quis, finibus risus. Vestibulum ornare euismod orci, vitae porttitor odio lacinia non. Quisque ut tincidunt quam.",
-        //   date: 1623021755581
+        //   date: 1623021755581,
+        //   liked: false
         // },
         // {
+        //   id: "ID2",
         //   content:
         //     "Mauris quis euismod mauris. Nam tortor nunc, cursus in molestie vitae, ultrices non erat. Morbi risus est, venenatis vel ultrices id, semper non risus. Duis mauris ante, molestie sit amet nulla a, convallis vulputate leo. Suspendisse eu pulvinar sem, sed luctus tellus. Etiam eu magna mollis, efficitur lectus quis, finibus risus. Vestibulum ornare euismod orci, vitae porttitor odio lacinia non. Quisque ut tincidunt quam.",
-        //   date: 1623021778431
+        //   date: 1623021778431,
+        //   liked: true
         // }
       ]
     };
@@ -122,7 +133,8 @@ export default {
     addNewQweet() {
       let newQweet = {
         content: this.newQweetContent,
-        date: Date.now()
+        date: Date.now(),
+        liked: false
       };
       // this.qweets.unshift(newQweet);
       // Add a new document with a generated id.
@@ -146,6 +158,19 @@ export default {
         .catch(error => {
           console.error("Error removing document: ", error);
         });
+    },
+    toggleQweet(qweet) {
+      db.collection("qweets")
+        .doc(qweet.id)
+        .update({
+          liked: !qweet.liked
+        })
+        .then(() => {
+          console.log("Document successfully updated!");
+        })
+        .catch(error => {
+          console.error("Error updating document: ", error);
+        });
     }
   },
   filters: {
@@ -166,6 +191,10 @@ export default {
           }
           if (change.type === "modified") {
             console.log("Modified qweet: ", qweetChange);
+            let index = this.qweets.findIndex(
+              qweet => qweet.id === qweetChange.id
+            );
+            Object.assign(this.qweets[index], qweetChange);
           }
           if (change.type === "removed") {
             console.log("Removed qweet: ", qweetChange);
