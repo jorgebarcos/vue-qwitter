@@ -128,7 +128,16 @@ export default {
         content: this.newQweetContent,
         date: Date.now()
       };
-      this.qweets.unshift(newQweet);
+      // this.qweets.unshift(newQweet);
+      // Add a new document with a generated id.
+      db.collection("qweets")
+        .add(newQweet)
+        .then(docRef => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(error => {
+          console.error("Error adding document: ", error);
+        });
       this.newQweetContent = "";
     },
     deleteQweet(qweet) {
